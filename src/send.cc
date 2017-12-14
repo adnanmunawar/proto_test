@@ -1,5 +1,6 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include <unistd.h>
 
 // this is our proto of foo
 #include "proto/foo.pb.h"
@@ -31,11 +32,13 @@ int main(int argc, char **argv)
       printf("Failed to connect \n");
       return -1;
     }
+    for(int i=0 ; i<5 ; i++){
+      send(sock, buf.data(), strlen(buf.c_str()), 0);
+      char buf_incoming[256];
 
-    send(sock, buf.data(), strlen(buf.c_str()), 0);
-    char buf_incoming[256];
-
-    int size = recv(sock, buf_incoming, sizeof(buf_incoming), 0);
-    printf("Bytes Received: \"%d\" | Message: %s",size, buf_incoming);
+      int size = recv(sock, buf_incoming, sizeof(buf_incoming), 0);
+      printf("i = %d, Bytes Received: \"%d\" | Message: %s",i, size, buf_incoming);
+    }
+    close(sock);
     return 0;
 }
