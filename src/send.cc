@@ -22,9 +22,17 @@ int main(int argc, char **argv)
     std::string buf;
     foo.SerializeToString(&buf);
 
-    int sock = socket(PF_INET, SOCK_DGRAM, 0);
-    sendto(sock, buf.data(), strlen(buf.c_str()), 0,
-           (struct sockaddr *)&addr, sizeof(addr));
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    int check = connect(sock, (struct sockaddr *)&addr, sizeof(addr));
+    if (check >= 0){
+      printf("Connected \n");
+    }
+    else{
+      printf("Failed to connect \n");
+      return -1;
+    }
+
+    send(sock, buf.data(), strlen(buf.c_str()), 0);
     char buf_incoming[256];
 
     int size = recv(sock, buf_incoming, sizeof(buf_incoming), 0);
