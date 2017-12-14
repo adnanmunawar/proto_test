@@ -1,0 +1,6 @@
+INCLUDE(FindProtobuf)
+FIND_PACKAGE(Protobuf REQUIRED)
+INCLUDE_DIRECTORIES(${PROTOBUF_INCLUDE_DIR})
+protobuf_generate_cpp(PROTO_SRC PROTO_HEADER foo.proto)
+protobuf_generate_python(PROTO_PY foo.proto)
+ADD_LIBRARY(proto ${PROTO_HEADER} ${PROTO_SRC})

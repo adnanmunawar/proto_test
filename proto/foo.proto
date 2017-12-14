@@ -1,0 +1,8 @@
+syntax = "proto2";
+package prototest;
+
+message Foo{
+	required int32 id = 1;
+	required string bar = 2;
+	optional string baz = 3;
+}
